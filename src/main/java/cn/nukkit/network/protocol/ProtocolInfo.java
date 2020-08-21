@@ -16,10 +16,10 @@ public interface ProtocolInfo {
     @SuppressWarnings("UnnecessaryBoxing")
     int CURRENT_PROTOCOL = Integer.valueOf("408"); // DO NOT REMOVE BOXING
 
-    List<Integer> SUPPORTED_PROTOCOLS = Ints.asList(CURRENT_PROTOCOL);
+    List<Integer> SUPPORTED_PROTOCOLS = Ints.asList(407, CURRENT_PROTOCOL);
 
-    String MINECRAFT_VERSION = "v1.16.20";
-    String MINECRAFT_VERSION_NETWORK = "1.16.20";
+    String MINECRAFT_VERSION = "v1.16.x";
+    String MINECRAFT_VERSION_NETWORK = "1.16.x";
 
     byte LOGIN_PACKET = 0x01;
     byte PLAY_STATUS_PACKET = 0x02;

@@ -2053,6 +2053,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         startGamePacket.levelId = "";
         startGamePacket.worldName = this.getServer().getNetwork().getName();
         startGamePacket.generator = 1; //0 old, 1 infinite, 2 flat
+        startGamePacket.vanillaVersion = this.getLoginChainData().getGameVersion();
         //startGamePacket.isInventoryServerAuthoritative = true;
         this.dataPacket(startGamePacket);
 
@@ -2116,9 +2117,10 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
                     LoginPacket loginPacket = (LoginPacket) packet;
 
-                    String message;
+                    final String message = "disconnected";
+
                     if (!ProtocolInfo.SUPPORTED_PROTOCOLS.contains(loginPacket.getProtocol())) {
-                        if (loginPacket.getProtocol() < ProtocolInfo.CURRENT_PROTOCOL) {
+                        /*if (loginPacket.getProtocol() < ProtocolInfo.CURRENT_PROTOCOL) {
                             message = "disconnectionScreen.outdatedClient";
 
                             this.sendPlayStatus(PlayStatusPacket.LOGIN_FAILED_CLIENT);
@@ -2126,7 +2128,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             message = "disconnectionScreen.outdatedServer";
 
                             this.sendPlayStatus(PlayStatusPacket.LOGIN_FAILED_SERVER);
-                        }
+                        }*/
                         if (((LoginPacket) packet).protocol < 137) {
                             DisconnectPacket disconnectPacket = new DisconnectPacket();
                             disconnectPacket.message = message;
@@ -2260,6 +2262,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             ResourcePackStackPacket stackPacket = new ResourcePackStackPacket();
                             stackPacket.mustAccept = this.server.getForceResources();
                             stackPacket.resourcePackStack = this.server.getResourcePackManager().getResourceStack();
+                            stackPacket.gameVersion = this.getLoginChainData().getGameVersion();
                             this.dataPacket(stackPacket);
                             break;
                         case ResourcePackClientResponsePacket.STATUS_COMPLETED:
