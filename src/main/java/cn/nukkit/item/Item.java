@@ -308,6 +308,19 @@ public class Item implements Cloneable, BlockID, ItemID {
             list[HONEYCOMB] = ItemHoneycomb.class; //736
             list[HONEY_BOTTLE] = ItemHoneyBottle.class; //737
 
+            list[LODESTONECOMPASS] = ItemLodestoneCompass.class; //741
+
+            list[CRIMSON_SIGN] = ItemCrimsonSign.class; //753
+            list[WARPED_SIGN] = ItemWarpedSign.class; //754
+            list[CRIMSON_DOOR] = ItemCrimsonDoor.class; //755
+            list[WARPED_DOOR] = ItemWarpedDoor.class; //756
+            list[WARPED_FUNGUS_ON_A_STICK] = ItemWarpedFungusOnAStick.class; //757
+            list[CHAIN] = ItemChain.class; //758
+            list[RECORD_PIGSTEP] = ItemRecordPigstep.class; //759
+            list[NETHER_SPROUTS] = ItemNetherSprouts.class; //760
+
+            list[SOUL_CAMPFIRE] = ItemSoulCampfire.class; //801
+
             for (int i = 0; i < 256; ++i) {
                 if (Block.list[i] != null) {
                     list[i] = Block.list[i];
