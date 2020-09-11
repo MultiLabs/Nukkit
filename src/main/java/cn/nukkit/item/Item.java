@@ -310,6 +310,8 @@ public class Item implements Cloneable, BlockID, ItemID {
 
             list[RECORD_PIGSTEP] = ItemRecordPigstep.class; //759
 
+            list[BAMBOO] = ItemBamboo.class; // 65337
+
             for (int i = 0; i < 256; ++i) {
                 if (Block.list[i] != null) {
                     list[i] = Block.list[i];
