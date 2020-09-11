@@ -1765,6 +1765,10 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             this.dummyBossBars.values().forEach(DummyBossBar::updateBossEntityPosition);
         }
 
+        if (this.getPosition().getLevelBlock().down().getId() == BlockID.CACTUS) {
+            this.attack(new EntityDamageByBlockEvent(this.getPosition().getLevelBlock().down(), this, DamageCause.CONTACT, 1));
+        }
+
         return true;
     }
 
