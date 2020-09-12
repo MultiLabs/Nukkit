@@ -308,6 +308,18 @@ public class Item implements Cloneable, BlockID, ItemID {
             list[HONEYCOMB] = ItemHoneycomb.class; //736
             list[HONEY_BOTTLE] = ItemHoneyBottle.class; //737
 
+            list[NETHERITE_INGOT] = ItemIngotNetherite.class; //742
+            list[NETHERITE_SWORD] = ItemSwordNetherite.class; //743
+            list[NETHERITE_SHOVEL] = ItemShovelNetherite.class; //744
+            list[NETHERITE_PICKAXE] = ItemPickaxeNetherite.class; //745
+            list[NETHERITE_AXE] = ItemAxeNetherite.class; //746
+            list[NETHERITE_HOE] = ItemHoeNetherite.class; //747
+            list[NETHERITE_HELMET] = ItemHelmetNetherite.class; //748
+            list[NETHERITE_CHESTPLATE] = ItemChestplateNetherite.class; //749
+            list[NETHERITE_LEGGINGS] = ItemLeggingsNetherite.class; //750
+            list[NETHERITE_BOOTS] = ItemBootsNetherite.class; //751
+            list[NETHERITE_SCRAP] = ItemNetheriteScrap.class; //752
+
             list[LODESTONECOMPASS] = ItemLodestoneCompass.class; //741
 
             list[CRIMSON_SIGN] = ItemCrimsonSign.class; //753
@@ -320,6 +332,7 @@ public class Item implements Cloneable, BlockID, ItemID {
             list[NETHER_SPROUTS] = ItemNetherSprouts.class; //760
 
             list[SOUL_CAMPFIRE] = ItemSoulCampfire.class; //801
+
 
             for (int i = 0; i < 256; ++i) {
                 if (Block.list[i] != null) {
