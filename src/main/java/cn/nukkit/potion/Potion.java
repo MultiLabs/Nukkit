@@ -1,6 +1,5 @@
 package cn.nukkit.potion;
 
-import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityLiving;
 import cn.nukkit.event.entity.EntityDamageEvent;
@@ -181,12 +180,6 @@ public class Potion implements Cloneable {
 
         if (applyEffect == null) {
             return;
-        }
-
-        if (entity instanceof Player) {
-            if (!((Player) entity).isSurvival() && !((Player) entity).isAdventure() && applyEffect.isBad()) {
-                return;
-            }
         }
 
         PotionApplyEvent event = new PotionApplyEvent(this, applyEffect, entity);

@@ -8,6 +8,8 @@ import cn.nukkit.plugin.PluginDescription;
 import cn.nukkit.utils.TextFormat;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created on 2015/11/12 by xtypr.
@@ -36,7 +38,8 @@ public class VersionCommand extends VanillaCommand {
                     sender.getServer().getCodename(),
                     sender.getServer().getApiVersion(),
                     sender.getServer().getVersion(),
-                    String.valueOf(ProtocolInfo.CURRENT_PROTOCOL)));
+                    Stream.of(ProtocolInfo.SUPPORTED_PROTOCOLS.toArray()).map(Object::toString).collect(Collectors.joining(", "))
+            ));
         } else {
             StringBuilder pluginName = new StringBuilder();
             for (String arg : args) pluginName.append(arg).append(" ");
