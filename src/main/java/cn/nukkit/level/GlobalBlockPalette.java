@@ -29,7 +29,7 @@ public class GlobalBlockPalette {
         runtimeIdToLegacy.defaultReturnValue(-1);
 
         ListTag<CompoundTag> tag;
-        try (InputStream stream = Server.class.getClassLoader().getResourceAsStream("runtime_block_states.dat")) {
+        try (InputStream stream = Server.class.getClassLoader().getResourceAsStream("runtime_block_states_307.dat")) {
             if (stream == null) {
                 throw new AssertionError("Unable to locate block state nbt");
             }

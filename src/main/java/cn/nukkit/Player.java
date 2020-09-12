@@ -2053,6 +2053,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         startGamePacket.levelId = "";
         startGamePacket.worldName = this.getServer().getNetwork().getName();
         startGamePacket.generator = 1; //0 old, 1 infinite, 2 flat
+        startGamePacket.vanillaVersion = this.getLoginChainData().getGameVersion();
         //startGamePacket.isInventoryServerAuthoritative = true;
         this.dataPacket(startGamePacket);
 
@@ -2116,13 +2117,14 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
                     LoginPacket loginPacket = (LoginPacket) packet;
 
-                    String message;
+                    String message = "";
+
                     if (!ProtocolInfo.SUPPORTED_PROTOCOLS.contains(loginPacket.getProtocol())) {
-                        if (loginPacket.getProtocol() < ProtocolInfo.CURRENT_PROTOCOL) {
+                        if (loginPacket.getProtocol() < ProtocolInfo.MINIMUM_PROTOCOL) {
                             message = "disconnectionScreen.outdatedClient";
 
                             this.sendPlayStatus(PlayStatusPacket.LOGIN_FAILED_CLIENT);
-                        } else {
+                        } else if(loginPacket.getProtocol() > ProtocolInfo.CURRENT_PROTOCOL){
                             message = "disconnectionScreen.outdatedServer";
 
                             this.sendPlayStatus(PlayStatusPacket.LOGIN_FAILED_SERVER);
@@ -2260,6 +2262,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             ResourcePackStackPacket stackPacket = new ResourcePackStackPacket();
                             stackPacket.mustAccept = this.server.getForceResources();
                             stackPacket.resourcePackStack = this.server.getResourcePackManager().getResourceStack();
+                            stackPacket.gameVersion = this.getLoginChainData().getGameVersion();
                             this.dataPacket(stackPacket);
                             break;
                         case ResourcePackClientResponsePacket.STATUS_COMPLETED:
@@ -2916,7 +2919,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                                 this.level.dropItem(vector3, itemDrop);
                                 itemFrame.setItem(new ItemBlock(Block.get(BlockID.AIR)));
                                 itemFrame.setItemRotation(0);
-                                this.getLevel().addSound(this, Sound.BLOCK_ITEMFRAME_REMOVE_ITEM);
+                                this.getLevel().addLevelEvent(this, LevelEventPacket.EVENT_SOUND_ITEM_FRAME_ITEM_REMOVED);
                             }
                         } else {
                             itemFrame.spawnTo(this);
@@ -3931,7 +3934,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         ev.setKeepExperience(this.level.gameRules.getBoolean(GameRule.KEEP_INVENTORY));
         ev.setKeepInventory(ev.getKeepExperience());
 
-        if (cause != null && cause.getCause() != DamageCause.VOID) {
+        if (cause != null && cause.getCause() != DamageCause.VOID && !cause.getCause().equals(DamageCause.SUICIDE)) {
             PlayerOffhandInventory offhandInventory = this.getOffhandInventory();
             PlayerInventory playerInventory = this.getInventory();
             if (offhandInventory.getItem(0).getId() == Item.TOTEM || playerInventory.getItemInHand().getId() == Item.TOTEM) {
@@ -4234,6 +4237,29 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
         this.setDataFlag(DATA_FLAGS, DATA_FLAG_ACTION, false);
         return true;
+    }
+
+    /**
+     * Drops an item on the ground in front of the player. Returns the dropped item.
+     *
+     * @param item to drop
+     * @return EntityItem if the item was dropped or null if the item was null
+     */
+    public EntityItem dropAndGetItem(Item item) {
+        if (!this.spawned || !this.isAlive()) {
+            return null;
+        }
+
+        if (item.isNull()) {
+            this.server.getLogger().debug(this.getName() + " attempted to drop a null item (" + item + ")");
+            return null;
+        }
+
+        Vector3 motion = this.getDirectionVector().multiply(0.4);
+
+        this.setDataFlag(DATA_FLAGS, DATA_FLAG_ACTION, false);
+
+        return this.level.dropAndGetItem(this.add(0, 1.3, 0), item, motion, 40);
     }
 
     public void sendPosition(Vector3 pos) {
@@ -4983,7 +5009,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             if (xpOrb.getPickupDelay() <= 0) {
                 int exp = xpOrb.getExp();
                 entity.kill();
-                this.getLevel().addSound(this, Sound.RANDOM_ORB);
+                this.getLevel().addLevelEvent(this, LevelEventPacket.EVENT_SOUND_EXPERIENCE_ORB);
                 pickedXPOrb = tick;
 
                 //Mending
