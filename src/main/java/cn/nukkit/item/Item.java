@@ -333,6 +333,7 @@ public class Item implements Cloneable, BlockID, ItemID {
 
             list[SOUL_CAMPFIRE] = ItemSoulCampfire.class; //801
 
+            list[BAMBOO] = ItemBamboo.class; // 65337
 
             for (int i = 0; i < 256; ++i) {
                 if (Block.list[i] != null) {
